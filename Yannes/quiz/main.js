@@ -4,7 +4,10 @@ let mouse = {
   y: 0,
   click: false
 };
+let points = 0;
+let secondesperquestion = 10;
 let question = 0;
+let startcountdown = false;
 window.onload = function() {
   canv = document.getElementById("gc"); // canvas wird geladen
   ctx = canv.getContext("2d"); //modus auf 2d setzen
@@ -12,8 +15,8 @@ window.onload = function() {
   window.addEventListener('mouseup', mouseUp, false);
 
   document.addEventListener("mousemove", mouseMoveHandler, false);
-  setInterval(chooseState, 1000 / 30); // Wiederholung von der function game 120 mal in der Sekunde ( 120 fps)
-
+  setInterval(chooseState, 1000 / 30);
+  setInterval(timer, 1000);
   new Button(100, 100, "Play", 200, 100, "grey", "blue", 40, 1, true);
 
   new Button(100, 200, "A", 200, 100, "grey", "blue", 30, 1, false);
@@ -27,8 +30,12 @@ window.onload = function() {
 function chooseState() {
   if (state == 0) {
     menu();
+    starttimer();
   } else if (state == 1) {
     game();
+
+  } else if (state == 2) {
+    lose();
   }
   mouse.click = false;
 }
@@ -41,6 +48,7 @@ function menu() {
     MenuButtons[i].draw();
     if (MenuButtons[i].check_mouse(mouse.x, mouse.y, mouse.click)) {
       state = MenuButtons[i].newAction;
+      questions.sort(() => Math.random() - 0.5);
     }
   }
 }
@@ -53,75 +61,30 @@ function game() {
   ctx.fillStyle = "black"
   ctx.font = "25px Arial"
   fillTextMoreLines(addLinebreak(questions[question].question, 20), canv.width / 2, canv.height / 5, 25);
+  ctx.fillText("points:" + points, 50, 45);
+  ctx.fillText("Time left:" + secondesperquestion, 500, 45)
+
   for (var i = 0; i < 4; i++) {
     GameButtons[i].draw();
     if (GameButtons[i].check_mouse(mouse.x, mouse.y, mouse.click)) {
       answer = ConvertCorrectAnswer();
       if (i == answer) {
         question++;
+        points++;
+        starttimer();
+      } else {
+        state = 2;
       }
     }
   }
-}
-
-function ConvertCorrectAnswer() {
-  correctAnswer = questions[question].correctAnswer;
-  answer = 0
-  if (correctAnswer == "A") {
-    answer = 0;
-  } else if (correctAnswer == "B") {
-    answer = 1;
-  } else if (correctAnswer == "C") {
-    answer = 2;
-  } else if (correctAnswer == "D") {
-    answer = 3;
-  }
-  return answer;
-}
-
-function fillTextMoreLines(text, x, y, textSize) {
-  var betweenLines = 30;
-  var lines = text.split('\n');
-  for (var i = 0; i < lines.length; i++) {
-    ctx.fillText(lines[i], x, y + (i * betweenLines) + textSize-(lines.length/2*betweenLines));
+  if (secondesperquestion <= 0) {
+    state = 2;
   }
 }
 
-function UpdateAnswers() {
-  GameButtons[0].text = addLinebreak(questions[question].A, 8)
-  GameButtons[1].text = addLinebreak(questions[question].B, 8)
-  GameButtons[2].text = addLinebreak(questions[question].C, 8)
-  GameButtons[3].text = addLinebreak(questions[question].D, 8)
-}
-
-function addLinebreak(string, maxlen) {
-  stringArray = string.split("");
-  if (string.length > maxlen) {
-    stringArray.splice(maxlen, 0, "\n");
-    return stringArray.join('');
-  } else {
-    return string;
-  }
-}
-
-function mouseDown() {
-  mouse.click = false;
-}
-
-function mouseUp() {
-  mouse.click = true;
-}
-
-function mouseMoveHandler(e) {
-  let relativeX = e.clientX - canv.offsetLeft;
-  let relativey = e.clientY - canv.offsetLeft;
-
-  if (relativeX > 0 && relativeX < canv.width) {
-    mouse.x = relativeX;
-  }
-
-  if (relativey > 0 && relativey < canv.height) {
-    mouse.y = relativey;
-
-  }
+function lose() {
+  ctx.fillStyle = "red"
+  ctx.fillRect(0, 0, canv.width, canv.height);
+  stoptimer();
+  console.log("losssse");
 }

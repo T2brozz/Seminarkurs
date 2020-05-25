@@ -24,7 +24,7 @@ class Button {
     ctx.textAlign = "center";
     ctx.font = String(this.textSize) + "px Arial";
     ctx.fillStyle = this.txtColor;
-    fillTextMoreLines(this.text, this.x + this.width/2, this.y+this.height/2 ,Number(this.textSize));
+    fillTextMoreLines(this.text, this.x + this.width / 2, this.y + this.height / 2, Number(this.textSize));
   }
   check_mouse(x, y, click) {
     if (this.x < x && this.x + this.width > x &&
