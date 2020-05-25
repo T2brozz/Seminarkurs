@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title> Flappy Fliege</title>
+  <style>
+    #stand {
+      position: fixed;
+      bottom: 550px;
+      right: 500px;
+      text-align: center;
+      width: 80px;
+      border: 3px solid #73AD21;
+    }
+
+    #highscore {
+      position: fixed;
+      bottom: 500px;
+      right: 460px;
+      text-align: center;
+      width: 120px;
+      border: 3px solid #73AD21;
+    }
+  </style>
+  <script type="text/javascript">
+    // ALLES IN DER FOLGENDEN FUNKTION WIRD NUR EINMAL BEIM LADEN AUSGEFÜHRT:
+    var start = false;
+    var counter = 0;
+    var highscore = 0;
+    var go = 0;
+    var counter_start = 0;
+    var mouse_x = 0;
+    var mouse_y = 0;
+
+    function nachLaden() {
+
+      //____________________________________________________________//Pictures
+      var imageFlappy = new Image();
+      var imageRöhre = new Image();
+      imageRöhre.src = "Röhre.png";
+      imageFlappy.src = "Flappyfliege.png";
+      var start_game_button = new Image();
+      start_game_button.src = "startgame.png";
+      var credits_pic = new Image();
+      credits_pic.src = "credits.png";
+      //____________________________________________________________//
+
+      canv = document.getElementById("gc"); // Canvas aus HTML Teil ansteuern
+      ctx = canv.getContext("2d"); // Kontext zum "zeichnen" festlegen
+      document.addEventListener("keydown", keyPush);
+      document.addEventListener("mousemove", mouseMoveHandler, false);
+      window.addEventListener('mousedown', mouseKlickHandler, false);
+
+
+      function makeFigur(image, x_pos, y_pos) {   //constructor
+        this.x = x_pos;
+        this.y = y_pos; // Position (x, y)
+
+        this.vy = 0;
+        this.vx = 0;
+
+        this.move = function() {
+
+          this.y = this.y + this.vy;
+          this.x = this.x + this.vx;
+          ctx.drawImage(image, this.x, this.y);
+        }
+      }
+
+//____________________________________________________________//create new figur
+      var Flappy = new makeFigur(imageFlappy, 100, 100);
+      Flappy.vx = 0;
+
+      var Rohre_unten = new makeFigur(imageRöhre, 500, 250);
+      var Rohre_oben = new makeFigur(imageRöhre, 500, -500)
+      Rohre_unten.vx = 0;
+      Rohre_oben.vx = 0;
+
+      var startbutton = new makeFigur(start_game_button, 100, 100);
+      var creditsbutton = new makeFigur(credits_pic,100,200);
+//____________________________________________________________//
+
+
+
+
+
+      setInterval(startgame, 1000 / 60);
+
+
+
+
+      function startgame() {
+        if (go==1) {
+          game();
+        } else if (go==0){
+          menü();
+        }else if (go==2){
+          credits();
+        }
+      }
+
+      function menü() {
+
+      ctx.fillStyle = "#8dfce2";
+      ctx.fillRect(0, 0, canv.width, canv.height);   // show menü
+      startbutton.move();
+      creditsbutton.move();
+
+}
+
+function credits(){
+  console.log("ghvbnjffghj");
+}
+
+
+
+      function game() {   // move Figur
+        ctx.fillStyle = "#FFEBCD";
+        ctx.fillRect(0, 0, canv.width, canv.height);
+        Flappy.move();
+        Rohre_unten.move();
+        Rohre_oben.move();
+
+        if (Rohre_unten.x <= -100) {     //height of tupe
+          Rohre_unten.x = 610;
+          Rohre_oben.x = 610;
+          Rohre_oben.y = Math.floor(Math.random() * -500) + -150;
+          Rohre_unten.y = Rohre_oben.y + 750;
+        }
+
+
+
+        if (start) {
+          counter_start = 1;
+          Flappy.vy += 0.5;
+
+
+          Rohre_unten.vx = -5.5;
+          Rohre_oben.vx = -5.5;
+//____________________________________________________________// Deaths
+          if (Flappy.y >= canv.height) {
+            start = false;
+
+          }
+          if (Flappy.x + 100 > Rohre_unten.x) {
+            if (Flappy.x < Rohre_unten.x + 100) {
+              if (Flappy.y + 100 > Rohre_unten.y) {
+                start = false;
+
+              }
+            }
+          }
+          if (Flappy.x + 100 > Rohre_unten.x) {
+            if (Flappy.x < Rohre_unten.x + 100) {
+              if (Flappy.y < Rohre_oben.y + 500) {
+                start = false;
+
+              }
+            }
+          }
+        }
+//____________________________________________________________//
+
+
+
+
+        if (counter_start == 1 && start == false) {
+          alert("Dead");
+          Flappy.y = 100;
+          Flappy.vy = 0;
+          Rohre_unten.x = 500;
+          Rohre_oben.x = 500;
+          Rohre_oben.y = -500;
+          Rohre_unten.y = 250;
+          Rohre_unten.vx = 0;
+          Rohre_oben.vx = 0;
+          counter_start = 0;
+
+
+          counter = 0;
+          document.getElementById("stand").innerHTML = "Punkte:" + counter;
+        }
+
+
+
+
+        if (highscore < counter) {
+          highscore = counter;
+        }
+
+
+        if (Flappy.x < Rohre_unten.x + 110 && Flappy.x > Rohre_unten.x + 100) {   //count points
+          counter += 0.5;
+
+
+        }
+        document.getElementById("stand").innerHTML = "Punkte:" + counter;
+        document.getElementById("highscore").innerHTML = "Highscore:" + highscore;
+      }
+
+
+
+
+      function keyPush(event) {
+        switch (event.keyCode) {
+          // keycodes 37 bis 40 sind die Pfeiltasten
+          // siehe: https://www.mediaevent.de/javascript/Extras-Javascript-Keycodes.html
+          case 32:
+            Flappy.vy = Flappy.vy - 10; // zweite Flappy.vy löscen um Frustration zu vermeiden
+            start = true;
+            break;
+        }
+      }
+
+      function mouseMoveHandler(e) {
+        var relativeX = e.clientX - canv.offsetLeft;
+        var relativey = e.clientY - canv.offsetLeft;
+
+        if (relativeX > 0 && relativeX < canv.width) {
+          mouse_x = relativeX;
+        }
+
+        if (relativey > 0 && relativey < canv.height) {
+          mouse_y = relativey;
+        }
+      }
+
+      function mouseKlickHandler() {
+        var x__pos = startbutton.x;
+        var y__pos_1 = startbutton.y;
+        var y__pos_2 = creditsbutton.y;
+        var length = 400;
+        var heigh = 100;
+        if (mouse_x > x__pos && mouse_x < x__pos + length && mouse_y < y__pos_1 + heigh && mouse_y > y__pos_1 && go == 0){
+          go = 1;
+      }
+        else if (mouse_x > x__pos && mouse_x < x__pos + length && mouse_y < y__pos_2 + heigh && mouse_y > y__pos_2 && go ==0){
+          go = 2;
+      }
+    }
+    }
+  </script>
+
+</head>
+<!-- oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo onload="nachLaden();">  oooo -->
+
+<body onload="nachLaden();">
+
+  <p> <span id="stand"></span> </p>
+  <p> <span id="highscore"></span> </p>
+  <canvas id="gc" width="600" height="600"></canvas>
+
+</body>
+
+</html>

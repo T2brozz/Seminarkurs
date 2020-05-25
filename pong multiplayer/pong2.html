@@ -1,0 +1,210 @@
+<html>
+<style>
+  .loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite;
+    /* Safari */
+    animation: spin 2s linear infinite;
+  }
+
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+</style>
+
+<head>
+
+  <script>
+    var ws = new WebSocket("ws://localhost:3000/");
+    let device = "0";
+    let name = "";
+
+    function load() {
+      document.getElementById("text1").innerHTML = "Enter your Username";
+      document.getElementById("text2").innerHTML = "Select your device";
+      if ("WebSocket" in window) {
+        //alert("WebSocket is supported by your Browser!");
+
+        // Let us open a web socket
+
+
+        ws.onopen = function() {
+          console.log("Connected");
+          // Web Socket is connected, send data using send()
+
+          //alert("Message is sent...");
+        };
+
+        ws.onmessage = function(evt) {
+          let data = evt.data;
+          console.log(data);
+          var obj = JSON.parse(data);
+          switch (obj.id) {
+            case "LOGIN_ATTEMPT":
+              if (obj.confirm == "true") {
+                alert("anmeldung erfolgreich");
+                delete_login();
+              } else {
+                alert("Anmeldung fehlgeschlagen! Bitte nochmal versuchen");
+              }
+          }
+        }
+
+        ws.onclose = function() {
+
+          // websocket is closed.
+          console.log("connection ends");
+
+        };
+      } else {
+
+        // The browser doesn't support WebSocket
+        alert("WebSocket NOT supported by your Browser!");
+      }
+    }
+
+
+
+    function login() {
+      name = document.getElementById('name').value;
+      if (device === "0") {
+        alert("wählen sie ein das device aus");
+
+      } else {
+        ws.send(JSON.stringify({
+          id: "LOGIN",
+          name: name,
+          device: device
+        }));
+        console.log(name);
+      }
+    }
+
+    function to_name() {
+      let to = document.getElementById('to').value;
+      let message = document.getElementById('message').value;
+      ws.send(JSON.stringify({
+        id: "SEND_TO",
+        to_name: to,
+        msg: message
+      }));
+      console.log(JSON.stringify({
+        to_name: to,
+        msg: message
+      }));
+    }
+
+    function con() {
+      device = "1";
+    }
+
+    function display() {
+      device = "2";
+    }
+
+    function delete_login() {
+      document.getElementById('name').style.display = "none";
+      document.getElementById('display').style.display = "none";
+      document.getElementById('con').style.display = "none";
+      document.getElementById('login').style.display = "none";
+
+      if (device === "2") {
+        /*
+        var con1 = document.createElement("input");
+        con1.type = "text";
+        con1.id = "con1";
+        con1.value = "";
+
+        var con2 = document.createElement("input");
+        con2.type = "text";
+        con2.id = "con2";
+        con2.value = "";
+
+        var button_1 = document.createElement("input");
+        button_1.type = "button";
+        button_1.id = "submit button";
+        button_1.value = "Ask for connection";
+        button_1.setAttribute("onclick", "ask();");
+
+        document.getElementById("p1").parentNode.insertBefore(con2, document.getElementById("p1"));
+        document.getElementById("con2").parentNode.insertBefore(con1, document.getElementById("con2"));
+        document.getElementById("p2").parentNode.insertBefore(button_1, document.getElementById("p2"));*/
+        document.getElementById("con1").style.display = "inline-block";
+        document.getElementById("con2").style.display = "inline-block";
+        document.getElementById("ask").style.display = "inline-block";
+
+        document.getElementById("text1").innerHTML = "Select right controller ";
+        document.getElementById("text2").innerHTML = "Select left controller ";
+      } else {
+
+        document.getElementById("loading").style.display = "inline-block";
+        document.getElementById("text1").innerHTML = "Waiting for connection";
+        document.getElementById("text2").innerHTML = "";
+      }
+    }
+
+    function ask() {
+      let con1 = document.getElementById('con1').value;
+      let con2 = document.getElementById('con2').value;
+      ws.send(JSON.stringify({
+        id: "Ask Controller",
+        name: name,
+        con1: con1,
+        con2: con2
+      }));
+    }
+  </script>
+
+</head>
+
+
+
+
+<body onload="load();">
+
+
+  <p><span id="text1" style="display:inline-block"></span></p>
+
+  <input type="text" style="display:inline-block" value="" id="name" /><!-- Username -->
+
+  <input type="text" style="display:none" value="" id="con1" /> <!-- Select controller 1 -->
+
+  <div class="loader" style="display:none" id="loading"></div>
+
+  <p><span id="text2" style="display:inline-block"></span></p>
+
+  <input type="button" style="display:inline-block" value="controller" onclick="con();" id="display" /> <!-- Controller -->
+  <input type="button" style="display:inline-block" value="dispaly" onclick="display();" id="con" /><!-- Display -->
+
+  <input type="text" style="display:none" value="" id="con2" /><!-- select controller 2 -->
+
+  <p id="p2"></p>
+
+  <input type="button" style="display:inline-block" value="login" onclick="login();" id="login" />
+
+  <input type="button" style="display:none" value="Ask vor Connection" onclick="ask();" id="ask" />
+
+</body>
+
+</html>

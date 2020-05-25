@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script type="text/javascript">
+    window.onload = function() {
+      canv = document.getElementById("gc");
+      ctx = canv.getContext("2d");
+
+      var leafs=new Image();
+      leafs.src="./leaf.png";
+
+      var baum = new Image();
+      baum.src="./baum.png";
+
+      var spider = new Image();
+      spider.src="./spider.png";
+      var head = new Image();
+      head.src="./flying hat.png";
+      var coin = new Image();
+      coin.src="./coin.png";
+      var posx =[0,100,0,100,0,100,0];
+      var posy=[0,0,100,100,100,0,0];
+      setInterval(game,1000/5);
+      var is =0;
+      var leafobjects=[];
+      class leaf{
+        constructor(){
+          this.x=-10;
+          this.vx=10;
+          this.y=Math.floor(Math.random() * Math.floor(90));
+        }
+        move(){
+          this.x=this.x+this.vx;
+          ctx.drawImage(leafs,this.x,this.y,20,20);
+
+        }
+      }
+
+        for(i=0;i<2;i++){
+          leafobjects.push(new leaf());
+        }
+      function game(){
+        leafobjects.push(new leaf());
+        ctx.fillRect(0,0,canv.width,100);
+        ctx.fillStyle="white";
+        /*for (var i = 0; i < leafobjects.length; i++) {
+          leafobjects[i].move();
+          if(leafobjects[i].x>canv.width){
+            leafobjects.splice(i,1);
+          }
+        }*/
+
+        ctx.drawImage(baum,posx[is],posy[is],100,100,0,0,100,100);
+        if(is==6){
+          is =0;
+        }
+        is++;
+
+        ctx.drawImage(spider,125,0);
+        ctx.drawImage(head,250,0);
+        ctx.drawImage(coin,375,0);
+      }
+    }
+    </script>
+  </head>
+  <body>
+    <canvas id="gc" width="600" height="100"></canvas>
+  </body>
+</html>

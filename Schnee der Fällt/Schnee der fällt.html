@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title> Beschneiter Tannenbaum</title>
+  <script>
+    window.onload = function() {
+      canv = document.getElementById("gc"); // canvas wird geladen
+      ctx = canv.getContext("2d"); //modus auf 2d setzen
+      window.addEventListener('mousedown',
+        click, false);
+      canv.style.cursor = "url('Bilder/streichholz.png'),auto"; //cursor = streichholz
+
+      setInterval(game, 1000 / 120); // Wiederholung von der function game 120 mal in der Sekunde ( 120 fps)
+    }
+    var x_schnee = 0; // position von allen schnee bildern
+
+    var y_schnee1_1 = -1500; // höhe von den kleinen schneeflocken
+    var y_schnee1_2 = -3000;
+
+    var y_schnee2_1 = -2000;
+    var y_schnee2_2 = -3500; //höhe von den Großen Schneeflocken
+
+    var schnee_bild = new Image(); //Bilder werden intialisiert
+    schnee_bild.src = 'Bilder/Schnee_der_fällt2.png';
+    var schnee_bild2 = new Image();
+    schnee_bild2.src = 'Bilder/Schnee_der_fällt3.png';
+    var baum_bild = new Image();
+    baum_bild.src = 'Bilder/christmas baum.png';
+    var baum_bild_verbrannt = new Image();
+    baum_bild_verbrannt.src = "Bilder/baumVerbrannt.png";
+    var licht = new Image();
+    licht.src = "Bilder/licht.png";
+
+    var mausklick = false;
+    var alpha = 1.0;
+
+    function game() {
+
+      ctx.fillStyle = "white";
+      ctx.fillRect(0, 0, canv.width, canv.height); //neuzeichnung des Bildes
+      if (mausklick == true) {
+        ctx.drawImage(baum_bild_verbrannt, 0, 0); // Position des Baumes verbrannt
+        ctx.fillStyle = `rgba(255, 247, 214,${alpha} )`; //lichtbogen mit alpha kanal
+        ctx.fillRect(0, 0, 500, 500) // canavs ausfüllen
+        alpha -= 0.001;
+
+      } else {
+        ctx.drawImage(baum_bild, 0, 0); // Position des Baumes
+      }
+      ctx.drawImage(schnee_bild2, x_schnee, y_schnee2_1); // Animation der kleinen Schneeflocke
+      ctx.drawImage(schnee_bild2, x_schnee, y_schnee2_2);
+
+      ctx.drawImage(schnee_bild, x_schnee, y_schnee1_1); // das gleich nochmal mit den großen Schneeflocken
+      ctx.drawImage(schnee_bild, x_schnee, y_schnee1_2);
+
+      y_schnee1_1 += 0.5; // Schneeflocke bewegen sich 0.5 Pixel nach unten
+      y_schnee1_2 += 0.5;
+
+      if (y_schnee1_1 == 500) { // wenn die y Position von den kleinen Flocken = 500 dann setzte es auf - 2500
+        y_schnee1_1 = -2500;
+
+      } else if (y_schnee1_2 == 500) {
+        y_schnee1_2 = -2500;
+      }
+      y_schnee2_1 += 1;
+      y_schnee2_2 += 1;
+      if (y_schnee2_1 == 500) {
+        y_schnee2_1 = -2500;
+      } else if (y_schnee2_2 == 500) {
+        y_schnee2_2 = -2500;
+      }
+    }
+
+    function click() {
+      mausklick = true;
+      canv.style.cursor = "none"; // cursor = nichts
+
+    }
+  </script>
+
+</head>
+<!-- ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -->
+
+<body>
+  <canvas id="gc" width="500" height="500"></canvas>
+</body>
+
+</html>
