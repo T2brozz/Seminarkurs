@@ -12,7 +12,6 @@ window.onload = function() {
   canv = document.getElementById("gc"); // canvas wird geladen
   ctx = canv.getContext("2d"); //modus auf 2d setzen
   window.addEventListener('mousedown', mouseDown, false);
-  window.addEventListener('mouseup', mouseUp, false);
 
   document.addEventListener("mousemove", mouseMoveHandler, false);
   setInterval(chooseState, 1000 / 30);
@@ -23,7 +22,6 @@ window.onload = function() {
   new Button(325, 200, "B", 200, 100, "grey", "blue", 30, 1, false);
   new Button(100, 325, "C", 200, 100, "grey", "blue", 30, 1, false);
   new Button(325, 325, "D", 200, 100, "grey", "blue", 30, 1, false);
-
 }
 
 
@@ -37,7 +35,7 @@ function chooseState() {
   } else if (state == 2) {
     lose();
   }
-  mouse.click = false;
+  mouse.click=false;
 }
 
 function menu() {

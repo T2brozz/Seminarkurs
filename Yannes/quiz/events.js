@@ -1,11 +1,6 @@
 function mouseDown() {
-  mouse.click = false;
-}
-
-function mouseUp() {
   mouse.click = true;
 }
-
 function mouseMoveHandler(e) {
   let relativeX = e.clientX - canv.offsetLeft;
   let relativey = e.clientY - canv.offsetLeft;
