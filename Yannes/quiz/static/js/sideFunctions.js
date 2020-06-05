@@ -9,13 +9,13 @@ function stoptimer() {
 
 function timer() {
   if (startcountdown) {
-    secondesperquestion--;
+    secondesperquestion -= 0.1;
   }
 }
 
 function ConvertCorrectAnswer() {
   correctAnswer = questions[question].correctAnswer;
-  answer = 0
+  answer = 0;
   if (correctAnswer == "A") {
     answer = 0;
   } else if (correctAnswer == "B") {
@@ -29,7 +29,7 @@ function ConvertCorrectAnswer() {
 }
 
 function fillTextMoreLines(text, x, y, textSize) {
-  var betweenLines = 30;
+  var betweenLines = 40;
   var lines = text.split('\n');
   for (var i = 0; i < lines.length; i++) {
     ctx.fillText(lines[i], x, y + (i * betweenLines) + textSize - (lines.length / 2 * betweenLines));
@@ -37,10 +37,10 @@ function fillTextMoreLines(text, x, y, textSize) {
 }
 
 function UpdateAnswers() {
-  GameButtons[0].text = addLinebreak(questions[question].A, 8)
-  GameButtons[1].text = addLinebreak(questions[question].B, 8)
-  GameButtons[2].text = addLinebreak(questions[question].C, 8)
-  GameButtons[3].text = addLinebreak(questions[question].D, 8)
+  GameButtons[0].text = addLinebreak(questions[question].A, 8);
+  GameButtons[1].text = addLinebreak(questions[question].B, 8);
+  GameButtons[2].text = addLinebreak(questions[question].C, 8);
+  GameButtons[3].text = addLinebreak(questions[question].D, 8);
 }
 
 //https://stackoverflow.com/questions/12426118/split-a-text-to-add-a-new-line-every-n-characters-taking-care-of-spaces
@@ -82,4 +82,31 @@ function addLinebreak(text, max) { // clean the text
   }
   // return the first part and the exploded next part, concatenated by \n
   return exploded + "\n" + addLinebreak(text);
+}
+// https://stackoverflow.com/questions/5649803/remap-or-map-function-in-javascript
+function map_range(value, low1, high1, low2, high2) {
+  return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+}
+
+function clear_screen(color = "white") {
+  ctx.fillStyle = color;
+  ctx.fillRect(0, 0, 600, 600);
+
+}
+
+function applyJoker() {
+  correctAns = ConvertCorrectAnswer();
+  falseanswers = [];
+  while (true) {
+    var answer = Math.floor(Math.random() * 4);
+    if (falseanswers.includes(answer) == false && answer != correctAns) {
+      falseanswers.push(answer);
+    }
+    if (falseanswers.length == 2) {
+      break;
+    }
+  }
+  GameButtons[falseanswers[0]].text = "FALSE";
+  GameButtons[falseanswers[1]].text = "FALSE";
+  GameButtons.pop();
 }

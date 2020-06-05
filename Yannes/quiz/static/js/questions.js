@@ -131,4 +131,4 @@ questions = [{
   C: "Prag",
   D: "Madrid",
   correctAnswer: "A"
-}]
+}];

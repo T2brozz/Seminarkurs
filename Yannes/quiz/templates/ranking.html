@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+
+</head>
+<style>
+  body {
+    background-color: #B8CFD4;
+    font-family: "Roboto"
+
+  }
+
+  .user {
+
+    text-align: left;
+
+    background-color: #686C6B;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    height: 40px;
+    font-size: 30px;
+    border-radius: 4px;
+
+
+  }
+
+  .head {
+    font-size: 40px;
+    text-align: center;
+    position: sticky;
+
+  }
+</style>
+
+<body>
+  <h1 class="head">Leaderboard for Quiz</h1>
+  <p></p>
+  <p></p>
+  <div class="leaderboard">
+    <table style="margin-left:auto; margin-right:auto;">
+      <tr class="user">
+        <th style="font-weight: bolder;font-size: 35px;">Name</th>
+        <th style="font-weight: bolder;font-size: 35px;">Points</th>
+      </tr>
+      {%for user in sorted_list%}
+
+      <tr class="user">
+        <th>{{user[1]}}</th>
+        <th>{{user[0]}} </th>
+      </tr>
+      {%endfor %}
+    </table>
+
+
+  </div>
+</body>
+
+</html>

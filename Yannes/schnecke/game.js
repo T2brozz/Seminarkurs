@@ -13,10 +13,11 @@ let maus = {
 let inBewegung = false;
 
 let beere = new Image();
+beere.src = 'beere.png';
 let schnegge = new Image();
 let gras = new Image();
 let rabe = new Image();
-beere.src = 'beere.png';
+
 schnegge.src = 'garry.png';
 gras.src = 'gras.jpg';
 rabe.src = 'rabe.png';
@@ -33,7 +34,7 @@ function draw() {
   ctx.drawImage(rabe, (canv.width / 2) - 32, (canv.height / 2) - 32);
   for (var i = 0; i < beeren.length; i++) {
     ctx.drawImage(beere, beeren[i].x - 16, beeren[i].y - 16);
-  
+
   }
   ctx.drawImage(schnegge, schneggepos.x, schneggepos.y);
   if (inBewegung) {
@@ -41,11 +42,11 @@ function draw() {
     schneggepos.x = schneggepos.x + -(1 * Math.cos(angleDeg));
     schneggepos.y = schneggepos.y + -(1 * Math.sin(angleDeg));
   }
-  if(schneggepos.x<beeren[beeren.length-1].x+16&&schneggepos.x>beeren[beeren.length-1].x-16&&schneggepos.y<beeren[beeren.length-1].y+16&&schneggepos.y>beeren[beeren.length-1].y-16){
-    inBewegung=false;
+  if (schneggepos.x < beeren[beeren.length - 1].x + 16 && schneggepos.x > beeren[beeren.length - 1].x - 16 && schneggepos.y < beeren[beeren.length - 1].y + 16 && schneggepos.y > beeren[beeren.length - 1].y - 16) {
+    inBewegung = false;
   }
 
-  if ( Math.sqrt(Math.pow(schneggepos.x-(canv.width / 2) - 32,2) + Math.pow(schneggepos.y-(canv.height / 2) - 32,2))<=100) {
+  if (Math.sqrt(Math.pow(schneggepos.x - (canv.width / 2) - 32, 2) + Math.pow(schneggepos.y - (canv.height / 2) - 32, 2)) <= 100) {
     alert("GaMe oVeR!1!")
   }
 }
@@ -62,8 +63,8 @@ function mouseMoveHandler(e) {
 }
 
 function mouseClickHandler() {
-  if (inBewegung==false) {
-    inBewegung=true;
+  if (inBewegung == false) {
+    inBewegung = true;
     beeren.push({
       x: maus.x,
       y: maus.y
