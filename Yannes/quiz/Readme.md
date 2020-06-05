@@ -8,7 +8,7 @@ How to Start:
 4. visit 127.0.0.1:5000
 
 
-Fetaures:
+Features:
 - refactoring
 - objektoriented
 - scalable
