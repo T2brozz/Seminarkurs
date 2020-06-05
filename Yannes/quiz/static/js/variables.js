@@ -15,7 +15,6 @@ let startcountdown = false; // countdown state
 
 //sounds
 var clickSound = new Audio('../static/sounds/click.wav');
-var hoverSound = new Audio('../static/sounds/hover.wav');
 // Menubuttons
 new Button(150, 100, "Play", 300, 100, "rgb(89, 87, 87)", "white", "rgb(89,87,87)", 40, 1, true);
 new Button(150, 225, "How to Play", 300, 100, "rgb(89, 87, 87)", "white", "rgb(89,87,87)", 40, 2, true);

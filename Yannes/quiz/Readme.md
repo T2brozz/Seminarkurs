@@ -6,3 +6,16 @@ How to Start:
 3. start server with `python3 main.py
 
 4. visit 127.0.0.1:5000
+
+
+Fetaures:
+- refactoring
+- objektoriented
+- scalable
+- auto line break
+- write more then one line simultaneeously
+- sound
+- ranking system
+- backend
+- timer
+- Joker
