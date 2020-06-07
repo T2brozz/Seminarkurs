@@ -1,3 +1,4 @@
+
 //Button Arrays for Menu and for Game
 let MenuButtons = [];
 let GameButtons = [];
@@ -16,10 +17,12 @@ let startcountdown = false; // countdown state
 //sounds
 var clickSound = new Audio('../static/sounds/click.wav');
 // Menubuttons
+
 new Button(150, 100, "Play", 300, 100, "rgb(89, 87, 87)", "white", "rgb(89,87,87)", 40, 1, true);
 new Button(150, 225, "How to Play", 300, 100, "rgb(89, 87, 87)", "white", "rgb(89,87,87)", 40, 2, true);
-new Button(150, 350, "Credits", 300, 100, "rgb(89, 87, 87)", "white", "rgb(89,87,87)", 40, 3, true);
-new Button(150, 475, "Ranking", 300, 100, "rgb(89, 87, 87)", "white", "rgb(89,87,87)", 40, 4, true);
+new Button(150, 350, "Credits", 300, 100, "rgb(89, 87, 87)", "white", "rgb(89,87,87)", 40, 3,true);
+new Button(150, 475, "Ranking", 300, 100, "rgb(89, 87, 87)", "white", "rgb(89,87,87)", 40, 4,true );
+
 
 //GameButtons
 new Button(100, 200, "A", 200, 100, "rgb(89, 87, 87)", "white", "rgb(89,87,87)", 30);
